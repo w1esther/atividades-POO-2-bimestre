@@ -1,11 +1,28 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 
+class Cliente:
+    def __init__(self, nome, cpf) -> None:
+        self.__nome = nome
+        self.__cpf = cpf
+        # self.__endereco = endereco
+        # self.__contas = []
+
+    def get_nome(self):
+        return self.__nome
+    
+    def get_cpf(self):
+        return self.__cpf
+    
+    def exibir_dados(self):
+        return f'Nome: {self.__nome}\nCPF: {self.__cpf}'
+    
+
 class ContaBancaria:
     numero_contas = []
     contas_duplicadas = []
     def __init__(self, nome, conta, saldo):
-        self.__titular = nome
+        self.__cliente = nome
         self.__numero = conta
         self.__saldo = saldo
         ContaBancaria.numero_contas.append(self.__numero)
@@ -23,7 +40,7 @@ class ContaBancaria:
         return self.__saldo
     
     def get_titular(self):
-        return self.titular
+        return self.__cliente.get_nome()
     
     def get_numero(self):
         return self.numero
@@ -72,7 +89,9 @@ class ContaBancaria:
                 return False
             
     def exibir_dados(self):
-        return f"{self.__titular}, Conta {self.__numero}, possui R$ {self.__saldo:.2f}"
+        return f"Nome: {self.__cliente.get_nome()}\nConta: {self.__numero}\nSaldo: R$ {self.__saldo:.2f}\nCPF: {self.__cliente.get_cpf()}"
+
+
 
 class BancoApp:
     def __init__(self, janela):
@@ -80,11 +99,16 @@ class BancoApp:
         self.janela.title("Sistema Bancário - POO em Python")
         self.janela.geometry("850x400")
 
+        cliente1 = Cliente('João', 288383)
+        cliente2 = Cliente('Esther', 3883488)
+        cliente3 = Cliente('Pedro', 3784982)
+        cliente4 = Cliente('Maria', 3994882)
+
         self.contas = [
-            ContaBancaria("João", 1001, 500),
-            ContaBancaria("Maria", 1002, 1000),
-            ContaBancaria("Pedro", 1003, 300),
-            ContaBancaria("Esther", 1004, 20)
+            ContaBancaria(cliente1, 1001, 500),
+            ContaBancaria(cliente2, 1002, 1000),
+            ContaBancaria(cliente3, 1003, 300),
+            ContaBancaria(cliente4, 1004, 20)
         ]
         if ContaBancaria.existe_conta_duplicada():
             messagebox.showerror("Erro", "Existe Conta Duplicada")
