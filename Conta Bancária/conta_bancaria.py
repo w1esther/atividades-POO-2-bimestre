@@ -1,12 +1,34 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 
+class Endereco:
+    def __init__(self, rua, numero, bairro, cidade):
+        self.__rua = rua
+        self.__numero = int(numero)
+        self.__bairro = bairro
+        self.__cidade = cidade
+
+    def get_rua(self):
+        return self.__rua 
+    
+    def get_numero(self):
+        return self.__numero
+    
+    def get_bairro(self):
+        return self.__bairro
+    
+    def get_cidade(self):
+        return self.__cidade
+    
+    def exibir_dados(self):
+        return f'Rua: {self.__rua}\nNumero: {self.__numero}\nBairro: {self.__bairro}\nCidade: {self.__cidade}'
+
 class Cliente:
-    def __init__(self, nome, cpf) -> None:
+    def __init__(self, nome, cpf, endereco) -> None:
         self.__nome = nome
         self.__cpf = cpf
-        # self.__endereco = endereco
-        # self.__contas = []
+        self.__endereco = endereco
+        self.__contas = []
 
     def get_nome(self):
         return self.__nome
@@ -14,8 +36,14 @@ class Cliente:
     def get_cpf(self):
         return self.__cpf
     
+    def get_endereco(self):
+        return self.__endereco
+    
     def exibir_dados(self):
-        return f'Nome: {self.__nome}\nCPF: {self.__cpf}'
+        return f'Nome: {self.__nome}\nCPF: {self.__cpf}\nEndereço: {self.__endereco}'
+    
+    def adicionar_conta(self, conta):
+        self.__contas.append(conta)
     
 
 class ContaBancaria:
@@ -26,10 +54,11 @@ class ContaBancaria:
         self.__numero = conta
         self.__saldo = saldo
         ContaBancaria.numero_contas.append(self.__numero)
+        self.__cliente.adicionar_conta(self)
 
     @property
     def titular(self):
-        return self.__titular
+        return self.__cliente
     
     @property
     def numero(self):
@@ -89,7 +118,7 @@ class ContaBancaria:
                 return False
             
     def exibir_dados(self):
-        return f"Nome: {self.__cliente.get_nome()}\nConta: {self.__numero}\nSaldo: R$ {self.__saldo:.2f}\nCPF: {self.__cliente.get_cpf()}"
+        return f"Nome: {self.__cliente.get_nome()}\nConta: {self.__numero}\nSaldo: R$ {self.__saldo:.2f}\nCPF: {self.__cliente.get_cpf()}\n{self.__cliente.get_endereco().exibir_dados()}"
 
 
 
@@ -99,10 +128,10 @@ class BancoApp:
         self.janela.title("Sistema Bancário - POO em Python")
         self.janela.geometry("850x400")
 
-        cliente1 = Cliente('João', 288383)
-        cliente2 = Cliente('Esther', 3883488)
-        cliente3 = Cliente('Pedro', 3784982)
-        cliente4 = Cliente('Maria', 3994882)
+        cliente1 = Cliente('João', 288383, Endereco('RUA 1', 123, 'Bairro 1', 'Cidade 1'))
+        cliente2 = Cliente('Esther', 38834808, Endereco('Rua 2', 383, 'Bairro 2', 'Cidade 2'))
+        cliente3 = Cliente('Pedro', 3784982, Endereco('Rua 3', 843, 'Bairro 3', 'Cidade 3'))
+        cliente4 = Cliente('Maria', 3994882, Endereco('Rua 4', 938, 'Bairro 4', 'Cidade 4'))
 
         self.contas = [
             ContaBancaria(cliente1, 1001, 500),
