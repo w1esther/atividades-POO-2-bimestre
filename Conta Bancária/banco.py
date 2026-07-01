@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
-from ContaBancaria import Cliente, Endereco, ContaBancaria
+from ContaBancaria import Cliente, ContaBancaria, Endereco, ContaCorrente, ContaPupanca, ContaSalario
 
 class BancoApp:
     def __init__(self, janela):
@@ -8,21 +8,18 @@ class BancoApp:
         self.janela.title("Sistema Bancário - POO em Python")
         self.janela.geometry("850x400")
 
-        cliente1 = Cliente('João', 288383, Endereco('RUA 1', 123, 'Bairro 1', 'Cidade 1'))
-        cliente2 = Cliente('Esther', 38834808, Endereco('Rua 2', 383, 'Bairro 2', 'Cidade 2'))
-        cliente3 = Cliente('Pedro', 3784982, Endereco('Rua 3', 843, 'Bairro 3', 'Cidade 3'))
-        cliente4 = Cliente('Maria', 3994882, Endereco('Rua 4', 938, 'Bairro 4', 'Cidade 4'))
+        cliente1  = Cliente("Ana", "004.045", Endereco('rua', 283, 'bairro', 'cidade'))
+        # cliente2 = Cliente("Arthur", "023.450")        
 
         self.contas = [
-            ContaBancaria(cliente1, 1001, 500),
-            ContaBancaria(cliente2, 1002, 1000),
-            ContaBancaria(cliente3, 1003, 300),
-            ContaBancaria(cliente4, 1004, 20)
+            # ContaBancaria("João", 1001, 500),
+            # ContaBancaria("Maria", 1002, 1000),
+            # ContaBancaria("Pedro", 1003, 300),
+            # ContaBancaria("Esther", 1004, 20),
+            ContaCorrente(cliente1, 123,700, 900, 80)
         ]
-        if ContaBancaria.existe_conta_duplicada():
-            messagebox.showerror("Erro", "Existe Conta Duplicada")
-            messagebox.showinfo("Contas", ContaBancaria.contas_duplicadas())
-            exit()
+
+        # messagebox.showinfo("Sucesso", "Depósito realizado.")
 
         self.criar_interface()
 
@@ -79,7 +76,7 @@ class BancoApp:
                 width=15,
                 command=lambda c=conta: self.depositar(c)
             )
-            btn_depositar.config(state="normal")
+            # btn_depositar.config(state="disabled")
             btn_depositar.pack(pady=2)
 
             btn_sacar = tk.Button(
@@ -88,7 +85,7 @@ class BancoApp:
                 width=15,
                 command=lambda c=conta: self.sacar(c)
             )
-            btn_sacar.config(state="normal")
+            # btn_sacar.config(state="disabled")
             btn_sacar.pack(pady=2)
 
             btn_transferir = tk.Button(
@@ -97,7 +94,7 @@ class BancoApp:
                 width=15,
                 command=lambda c=conta: self.transferir(c)
             )
-            btn_transferir.config(state="normal")
+            # btn_transferir.config(state="disabled")
             btn_transferir.pack(pady=2)
 
             btn_dados = tk.Button(
@@ -106,8 +103,26 @@ class BancoApp:
                 width=15,
                 command=lambda c=conta: self.exibir_dados(c)
             )
-            btn_dados.config(state="normal")
+            # btn_dados.config(state="disabled")
             btn_dados.pack(pady=2)
+
+            btn_rendimento = tk.Button(
+                frame,
+                text="Render Juros",
+                width=15,
+                command=lambda c=conta: self.render_juros(c)
+            )
+            btn_rendimento.config(state="disabled")
+            btn_rendimento.pack(pady=2)
+
+            btn_taxa = tk.Button(
+                frame,
+                text="Cobrar Taxa",
+                width=15,
+                command=lambda c=conta: self.cobrar_taxa(c)
+            )
+            btn_taxa.config(state="disabled")
+            btn_taxa.pack(pady=2)
 
     def depositar(self, conta):
         valor = simpledialog.askfloat("Depósito", "Digite o valor do depósito:")
@@ -166,6 +181,21 @@ class BancoApp:
 
     def exibir_dados(self, conta):
         messagebox.showinfo("Dados da Conta", conta.exibir_dados())
+
+    def render_juros(self, conta):
+        if(conta.get_tipo_conta() == "Conta Poupança"):
+            conta.render_juros()
+            messagebox.showerror("Sucesso", "Rendimento efetuado.")
+        else:
+            messagebox.showerror("Erro", "Conta não disponibiliza rendimento")
+    
+    def cobrar_taxa(self, conta):
+        if(conta.get_tipo_conta() == "Conta Corrente"):
+            conta.cobrar_taxa()
+            messagebox.showerror("Sucesso", "Rendimento efetuado.")
+        else:
+            messagebox.showerror("Erro", "Cobrança invalida para essa conta")
+
 
 
 janela = tk.Tk()
