@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
-from ContaBancaria import Cliente, ContaBancaria, Endereco, ContaCorrente, ContaPupanca, ContaSalario
+from ContaBancaria import Cliente, ContaBancaria, Endereco, ContaCorrente, ContaPoupanca, ContaSalario
 
 class BancoApp:
     def __init__(self, janela):
@@ -16,7 +16,8 @@ class BancoApp:
             # ContaBancaria("Maria", 1002, 1000),
             # ContaBancaria("Pedro", 1003, 300),
             # ContaBancaria("Esther", 1004, 20),
-            ContaCorrente(cliente1, 123,700, 900, 80)
+            ContaCorrente(cliente1, 123, 200, 1000, 80),
+            ContaPoupanca(cliente1, 145, 100, 0.1)
         ]
 
         # messagebox.showinfo("Sucesso", "Depósito realizado.")
@@ -112,7 +113,7 @@ class BancoApp:
                 width=15,
                 command=lambda c=conta: self.render_juros(c)
             )
-            btn_rendimento.config(state="disabled")
+            btn_rendimento.config(state="normal")
             btn_rendimento.pack(pady=2)
 
             btn_taxa = tk.Button(
@@ -121,7 +122,7 @@ class BancoApp:
                 width=15,
                 command=lambda c=conta: self.cobrar_taxa(c)
             )
-            btn_taxa.config(state="disabled")
+            btn_taxa.config(state="normal")
             btn_taxa.pack(pady=2)
 
     def depositar(self, conta):
@@ -188,13 +189,17 @@ class BancoApp:
             messagebox.showerror("Sucesso", "Rendimento efetuado.")
         else:
             messagebox.showerror("Erro", "Conta não disponibiliza rendimento")
-    
+        self.atualizar_tela()
+
+
     def cobrar_taxa(self, conta):
         if(conta.get_tipo_conta() == "Conta Corrente"):
-            conta.cobrar_taxa()
+            conta.cobrar_tarifa()
             messagebox.showerror("Sucesso", "Rendimento efetuado.")
         else:
             messagebox.showerror("Erro", "Cobrança invalida para essa conta")
+        self.atualizar_tela()
+
 
 
 

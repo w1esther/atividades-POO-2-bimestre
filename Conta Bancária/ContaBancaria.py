@@ -124,18 +124,44 @@ class ContaCorrente(ContaBancaria):
         self.__tarifa_mensal = tarifa_mensal
 
     def sacar(self, valor):
-        if valor <= self.__limite and self._ContaBancaria__saldo >= -(self._ContaBancaria__saldo - self.__limite):
+        if valor <= (self.__limite + self._ContaBancaria__saldo) and self._ContaBancaria__saldo >= -(self.__limite):
             self._ContaBancaria__saldo -= valor
+            return True
         else:
             return False
-    
+        
     def cobrar_tarifa(self):
-        pass
+        self.sacar(self.__tarifa_mensal)
 
-class ContaPupanca(ContaBancaria):
+    def exibir_dados(self):
+        return f"Nome: {self._ContaBancaria__cliente.get_nome()}\nConta: {self._ContaBancaria__numero}\nSaldo: R$ {self._ContaBancaria__saldo:.2f}\nCPF: {self._ContaBancaria__cliente.get_cpf()}\n{self._ContaBancaria__cliente.get_endereco().exibir_dados()}\nLimite: {self.__limite}\nTarifa Mensal: {self.__tarifa_mensal}"
+
+    def get_tipo_conta(self):
+        return 'Conta Corrente'
+
+class ContaPoupanca(ContaBancaria):
     def __init__(self, nome, conta, saldo, taxa_rendimento):
         super().__init__(nome, conta, saldo)
         self.__taxa_rendimento = taxa_rendimento
+
+    def sacar(self, valor):
+        if valor < 0:
+            return False
+        elif valor > self._ContaBancaria__saldo:
+            return False
+        else:
+            self.__saldo -= valor
+            return True
+
+    def render_juros(self):
+        rendimento = self.__taxa_rendimento * self._ContaBancaria__saldo
+        self._ContaBancaria__saldo += rendimento
+
+    def exibir_dados(self):
+        pass
+
+    def get_tipo_conta(self):
+        return 'Conta Poupança'
 
 class ContaSalario(ContaBancaria):
     def __init__(self, nome, conta, saldo, empresa, saquases_realizados, limite_saques):
@@ -143,3 +169,21 @@ class ContaSalario(ContaBancaria):
         self.__empresa = empresa
         self.__saques_realizados = saquases_realizados
         self.__limite_saques = limite_saques
+
+    def receber_salario(self, valor):
+        pass
+
+    def sacar(self, valor):
+        return super().sacar(valor)
+    
+    def depositar(self, valor):
+        return super().depositar(valor)
+    
+    def transferir(self, valor, destino):
+        return super().transferir(valor, destino)
+    
+    def exibir_dados(self):
+        pass
+
+    def get_tipo_conta(self):
+        return 'Conta Salário'
