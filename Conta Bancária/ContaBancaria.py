@@ -156,9 +156,10 @@ class ContaPoupanca(ContaBancaria):
     def render_juros(self):
         rendimento = self.__taxa_rendimento * self._ContaBancaria__saldo
         self._ContaBancaria__saldo += rendimento
+        return None
 
     def exibir_dados(self):
-        pass
+        return f"Nome: {self._ContaBancaria__cliente.get_nome()}\nConta: {self._ContaBancaria__numero}\nSaldo: R$ {self._ContaBancaria__saldo:.2f}\nCPF: {self._ContaBancaria__cliente.get_cpf()}\n{self._ContaBancaria__cliente.get_endereco().exibir_dados()}\nTaxa de rendimento: {self.__taxa_rendimento}"
 
     def get_tipo_conta(self):
         return 'Conta Poupança'
@@ -183,7 +184,7 @@ class ContaSalario(ContaBancaria):
         return super().transferir(valor, destino)
     
     def exibir_dados(self):
-        pass
+        return f"Nome: {self._ContaBancaria__cliente.get_nome()}\nConta: {self._ContaBancaria__numero}\nSaldo: R$ {self._ContaBancaria__saldo:.2f}\nCPF: {self._ContaBancaria__cliente.get_cpf()}\n{self._ContaBancaria__cliente.get_endereco().exibir_dados()}\nEmpresa: {self.__empresa}\nSaques realizados: {self.__saques_realizados}\nLimite de saques: {self.__limite_saques}"
 
     def get_tipo_conta(self):
         return 'Conta Salário'

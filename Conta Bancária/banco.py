@@ -186,7 +186,7 @@ class BancoApp:
     def render_juros(self, conta):
         if(conta.get_tipo_conta() == "Conta Poupança"):
             conta.render_juros()
-            messagebox.showerror("Sucesso", "Rendimento efetuado.")
+            messagebox.showinfo("Sucesso", "Rendimento efetuado.")
         else:
             messagebox.showerror("Erro", "Conta não disponibiliza rendimento")
         self.atualizar_tela()
@@ -195,7 +195,7 @@ class BancoApp:
     def cobrar_taxa(self, conta):
         if(conta.get_tipo_conta() == "Conta Corrente"):
             conta.cobrar_tarifa()
-            messagebox.showerror("Sucesso", "Rendimento efetuado.")
+            messagebox.showinfo("Sucesso", "Rendimento efetuado.")
         else:
             messagebox.showerror("Erro", "Cobrança invalida para essa conta")
         self.atualizar_tela()
