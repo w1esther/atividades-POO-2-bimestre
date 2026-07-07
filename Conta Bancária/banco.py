@@ -17,7 +17,8 @@ class BancoApp:
             # ContaBancaria("Pedro", 1003, 300),
             # ContaBancaria("Esther", 1004, 20),
             ContaCorrente(cliente1, 123, 200, 1000, 80),
-            ContaPoupanca(cliente1, 145, 100, 0.1)
+            ContaPoupanca(cliente1, 145, 100, 0.1),
+            ContaSalario(cliente1, 234, 300, 'X', 0, 2)
         ]
 
         # messagebox.showinfo("Sucesso", "Depósito realizado.")

@@ -170,18 +170,24 @@ class ContaSalario(ContaBancaria):
         self.__empresa = empresa
         self.__saques_realizados = saquases_realizados
         self.__limite_saques = limite_saques
+        self.contador = 0
 
     def receber_salario(self, valor):
-        pass
+        super().depositar(valor)
 
     def sacar(self, valor):
-        return super().sacar(valor)
+        self.contador += 1
+        if (self.contador >= self.__limite_saques) :
+            return 'Limite de saques atingido!'
+
+        else:
+            return super().sacar(valor)
     
     def depositar(self, valor):
-        return super().depositar(valor)
+        return 'Não é possível realizar depositos em conta salário!'
     
     def transferir(self, valor, destino):
-        return super().transferir(valor, destino)
+        return 'Não é possível realizar transferências em conta salário!'
     
     def exibir_dados(self):
         return f"Nome: {self._ContaBancaria__cliente.get_nome()}\nConta: {self._ContaBancaria__numero}\nSaldo: R$ {self._ContaBancaria__saldo:.2f}\nCPF: {self._ContaBancaria__cliente.get_cpf()}\n{self._ContaBancaria__cliente.get_endereco().exibir_dados()}\nEmpresa: {self.__empresa}\nSaques realizados: {self.__saques_realizados}\nLimite de saques: {self.__limite_saques}"
