@@ -184,10 +184,10 @@ class ContaSalario(ContaBancaria):
             return super().sacar(valor)
     
     def depositar(self, valor):
-        return 'Não é possível realizar depositos em conta salário!'
+        return False
     
     def transferir(self, valor, destino):
-        return 'Não é possível realizar transferências em conta salário!'
+        return False
     
     def exibir_dados(self):
         return f"Nome: {self._ContaBancaria__cliente.get_nome()}\nConta: {self._ContaBancaria__numero}\nSaldo: R$ {self._ContaBancaria__saldo:.2f}\nCPF: {self._ContaBancaria__cliente.get_cpf()}\n{self._ContaBancaria__cliente.get_endereco().exibir_dados()}\nEmpresa: {self.__empresa}\nSaques realizados: {self.__saques_realizados}\nLimite de saques: {self.__limite_saques}"

@@ -177,7 +177,7 @@ class BancoApp:
         if conta_origem.transferir(valor, conta_destino):
             messagebox.showinfo("Sucesso", "Transferência realizada.")
         else:
-            messagebox.showerror("Erro", "Saldo insuficiente ou valor inválido.")
+            messagebox.showerror("Erro", "Saldo insuficiente ou valor inválido ou não é possível executar esse método.")
 
         self.atualizar_tela()
 
