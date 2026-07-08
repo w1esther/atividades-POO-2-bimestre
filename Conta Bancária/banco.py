@@ -64,15 +64,45 @@ class BancoApp:
         entrada_saldo = tk.Entry(janela_cadastro)
         entrada_saldo.pack()
 
+        tk.Label(janela_cadastro, text="Tipo de conta:").pack(pady=5)
+        entrada_tipo_conta = tk.Entry(janela_cadastro)
+        entrada_tipo_conta.pack()
+
+        def criar_conta_corrente(self):
+            janela_cadastro = tk.Toplevel(self.janela)
+            janela_cadastro.title("Criar nova conta corrente")
+            janela_cadastro.geometry("400x350")
+            janela_cadastro.resizable(False, False)
+
+            tk.Label(janela_cadastro, text="Titular:").pack(pady=5)
+            entrada_titular = tk.Entry(janela_cadastro)
+            entrada_titular.pack()
+
+            tk.Label(janela_cadastro, text="Número da conta:").pack(pady=5)
+            entrada_numero = tk.Entry(janela_cadastro)
+            entrada_numero.pack()
+
+            tk.Label(janela_cadastro, text="Saldo inicial:").pack(pady=5)
+            entrada_saldo = tk.Entry(janela_cadastro)
+            entrada_saldo.pack()
+
+            tk.Label(janela_cadastro, text="Tipo de conta:").pack(pady=5)
+            entrada_tipo_conta = tk.Entry(janela_cadastro)
+            entrada_tipo_conta.pack()
+
 
         def salvar_conta():
             titular = entrada_titular.get()
             numero = entrada_numero.get()
             saldo = entrada_saldo.get()
+            tipo_conta = entrada_tipo_conta.get()
 
             if titular == "" or numero == "" or saldo == "":
                 messagebox.showerror("Erro", "Preencha todos os campos.")
                 return
+            
+            if tipo_conta == 'Conta Corrente':
+                return self.criar_conta_corrente()
 
             try:
                 numero = int(numero)
@@ -210,12 +240,19 @@ class BancoApp:
             btn_contas_cliente = tk.Button(
                 frame,
                 text='Contas desse cliente',
-                command=self.exibir_contas_cliente
+                command=lambda c=conta: self.exibir_contas_cliente(c)
             )   
 
             btn_contas_cliente.pack(pady=2)
 
-    def exibir_contas_cliente(self):
+    def exibir_contas_cliente(self,conta):
+        print("fafdsfasfsda")
+        # if self.contas:
+        messagebox.showinfo("Contas do cliente:", conta.get_contas())
+        # else:
+        #     messagebox.showwarning("Aviso", "Nenhum cliente selecionado!")
+
+    def exibir_dados_cliente(self, conta):
         pass
     
 
