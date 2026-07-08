@@ -33,10 +33,69 @@ class BancoApp:
         )
         titulo.pack(pady=15)
 
+        btn_criar = tk.Button(
+            self.janela,
+            text="Criar Conta",
+            width=20,
+            command=self.criar_conta
+        )
+        btn_criar.pack(pady=15)
+
         self.frame_contas = tk.Frame(self.janela)
         self.frame_contas.pack()
 
         self.atualizar_tela()
+
+    def criar_conta(self):
+        janela_cadastro = tk.Toplevel(self.janela)
+        janela_cadastro.title("Criar nova conta")
+        janela_cadastro.geometry("400x350")
+        janela_cadastro.resizable(False, False)
+
+        tk.Label(janela_cadastro, text="Titular:").pack(pady=5)
+        entrada_titular = tk.Entry(janela_cadastro)
+        entrada_titular.pack()
+
+        tk.Label(janela_cadastro, text="Número da conta:").pack(pady=5)
+        entrada_numero = tk.Entry(janela_cadastro)
+        entrada_numero.pack()
+
+        tk.Label(janela_cadastro, text="Saldo inicial:").pack(pady=5)
+        entrada_saldo = tk.Entry(janela_cadastro)
+        entrada_saldo.pack()
+
+
+        def salvar_conta():
+            titular = entrada_titular.get()
+            numero = entrada_numero.get()
+            saldo = entrada_saldo.get()
+
+            if titular == "" or numero == "" or saldo == "":
+                messagebox.showerror("Erro", "Preencha todos os campos.")
+                return
+
+            try:
+                numero = int(numero)
+                saldo = float(saldo)
+            except ValueError:
+                messagebox.showerror("Erro", "Número da conta e saldo devem ser valores numéricos.")
+                return
+
+            nova_conta = ContaBancaria(titular, numero, saldo)
+            self.contas.append(nova_conta)
+
+            messagebox.showinfo("Sucesso", "Conta criada com sucesso.")
+
+            janela_cadastro.destroy()
+            self.atualizar_tela()
+
+        btn_salvar = tk.Button(
+            janela_cadastro,
+            text="Salvar conta",
+            width=15,
+            command=salvar_conta
+        )
+        btn_salvar.pack(pady=15)
 
     def atualizar_tela(self):
         for widget in self.frame_contas.winfo_children():
@@ -71,6 +130,13 @@ class BancoApp:
                 font=("Arial", 12)
             )
             lbl_saldo.pack(pady=5)
+
+            lbl_tipo_conta = tk.Label(
+                frame,
+                text=f"Tipo de Conta: {conta.get_tipo_conta()}",
+                font=("Arial", 10)
+            )
+            lbl_tipo_conta.pack(pady=5)
 
             btn_depositar = tk.Button(
                 frame,
@@ -108,13 +174,25 @@ class BancoApp:
             # btn_dados.config(state="disabled")
             btn_dados.pack(pady=2)
 
+            btn_dados_cliente = tk.Button(
+                frame,
+                text="Dados do Cliente",
+                width=15,
+                command=lambda c=conta: self.exibir_dados(c)
+            )
+            # btn_dados.config(state="disabled")
+            btn_dados_cliente.pack(pady=2)
+
             btn_rendimento = tk.Button(
                 frame,
                 text="Render Juros",
                 width=15,
                 command=lambda c=conta: self.render_juros(c)
             )
-            btn_rendimento.config(state="normal")
+            if conta.get_tipo_conta() == 'Conta Poupança':
+                btn_rendimento.config(state="normal")
+            else:
+                btn_rendimento.config(state="disabled")
             btn_rendimento.pack(pady=2)
 
             btn_taxa = tk.Button(
@@ -123,8 +201,23 @@ class BancoApp:
                 width=15,
                 command=lambda c=conta: self.cobrar_taxa(c)
             )
-            btn_taxa.config(state="normal")
+            if conta.get_tipo_conta() == 'Conta Corrente':
+                btn_taxa.config(state="normal")
+            else:
+                btn_taxa.config(state="disabled")
             btn_taxa.pack(pady=2)
+
+            btn_contas_cliente = tk.Button(
+                frame,
+                text='Contas desse cliente',
+                command=self.exibir_contas_cliente
+            )   
+
+            btn_contas_cliente.pack(pady=2)
+
+    def exibir_contas_cliente(self):
+        pass
+    
 
     def depositar(self, conta):
         valor = simpledialog.askfloat("Depósito", "Digite o valor do depósito:")
@@ -200,9 +293,6 @@ class BancoApp:
         else:
             messagebox.showerror("Erro", "Cobrança invalida para essa conta")
         self.atualizar_tela()
-
-
-
 
 janela = tk.Tk()
 app = BancoApp(janela)
