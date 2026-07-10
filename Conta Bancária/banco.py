@@ -9,6 +9,7 @@ class BancoApp:
         self.janela.geometry("850x400")
 
         cliente1  = Cliente("Ana", "004.045", Endereco('rua', 283, 'bairro', 'cidade'))
+        cliente2 = Cliente('Maria', '123.432', Endereco('Rua 2', 124, 'Bairro 2', 'Cidade 2'))
         # cliente2 = Cliente("Arthur", "023.450")        
 
         self.contas = [
@@ -18,7 +19,8 @@ class BancoApp:
             # ContaBancaria("Esther", 1004, 20),
             ContaCorrente(cliente1, 123, 200, 1000, 80),
             ContaPoupanca(cliente1, 145, 100, 0.1),
-            ContaSalario(cliente1, 234, 300, 'X', 0, 2)
+            ContaSalario(cliente1, 234, 300, 'X', 0, 2),
+            ContaCorrente(cliente2, 832, 700, 1000, 45)
         ]
 
         # messagebox.showinfo("Sucesso", "Depósito realizado.")
@@ -49,7 +51,7 @@ class BancoApp:
     def criar_conta(self):
         janela_cadastro = tk.Toplevel(self.janela)
         janela_cadastro.title("Criar nova conta")
-        janela_cadastro.geometry("400x350")
+        janela_cadastro.geometry("700x800")
         janela_cadastro.resizable(False, False)
 
         tk.Label(janela_cadastro, text="Titular:").pack(pady=5)
@@ -68,27 +70,50 @@ class BancoApp:
         entrada_tipo_conta = tk.Entry(janela_cadastro)
         entrada_tipo_conta.pack()
 
-        def criar_conta_corrente(self):
-            janela_cadastro = tk.Toplevel(self.janela)
-            janela_cadastro.title("Criar nova conta corrente")
-            janela_cadastro.geometry("400x350")
-            janela_cadastro.resizable(False, False)
+        tk.Label(janela_cadastro, text="CPF:").pack(pady=5)
+        entrada_cpf = tk.Entry(janela_cadastro)
+        entrada_cpf.pack()
 
-            tk.Label(janela_cadastro, text="Titular:").pack(pady=5)
-            entrada_titular = tk.Entry(janela_cadastro)
-            entrada_titular.pack()
+        tk.Label(janela_cadastro, text="Rua:").pack(pady=5)
+        entrada_rua = tk.Entry(janela_cadastro)
+        entrada_rua.pack()
 
-            tk.Label(janela_cadastro, text="Número da conta:").pack(pady=5)
-            entrada_numero = tk.Entry(janela_cadastro)
-            entrada_numero.pack()
+        tk.Label(janela_cadastro, text="Número:").pack(pady=5)
+        entrada_numero_endereco = tk.Entry(janela_cadastro)
+        entrada_numero_endereco.pack()
 
-            tk.Label(janela_cadastro, text="Saldo inicial:").pack(pady=5)
-            entrada_saldo = tk.Entry(janela_cadastro)
-            entrada_saldo.pack()
+        tk.Label(janela_cadastro, text="Bairro:").pack(pady=5)
+        entrada_bairro = tk.Entry(janela_cadastro)
+        entrada_bairro.pack()
 
-            tk.Label(janela_cadastro, text="Tipo de conta:").pack(pady=5)
-            entrada_tipo_conta = tk.Entry(janela_cadastro)
-            entrada_tipo_conta.pack()
+        tk.Label(janela_cadastro, text="Cidade:").pack(pady=5)
+        entrada_cidade = tk.Entry(janela_cadastro)
+        entrada_cidade.pack()
+
+        tk.Label(janela_cadastro, text="Limite:").pack(pady=5)
+        entrada_limite = tk.Entry(janela_cadastro)
+        entrada_limite.pack()
+
+        tk.Label(janela_cadastro, text="Tarifa Mensal:").pack(pady=5)
+        entrada_tarifa = tk.Entry(janela_cadastro)
+        entrada_tarifa.pack()
+
+        tk.Label(janela_cadastro, text="Taxa de Rendimento:").pack(pady=5)
+        entrada_taxa_rendimento = tk.Entry(janela_cadastro)
+        entrada_taxa_rendimento.pack()
+
+        tk.Label(janela_cadastro, text="Empresa:").pack(pady=5)
+        entrada_empresa = tk.Entry(janela_cadastro)
+        entrada_empresa.pack()
+
+        tk.Label(janela_cadastro, text="Saques Realizados:").pack(pady=5)
+        entrada_saques_realizados = tk.Entry(janela_cadastro)
+        entrada_saques_realizados.pack()
+
+        tk.Label(janela_cadastro, text="Limite de Saques:").pack(pady=5)
+        entrada_limite_saques = tk.Entry(janela_cadastro)
+        entrada_limite_saques.pack()
+
 
 
         def salvar_conta():
@@ -96,23 +121,60 @@ class BancoApp:
             numero = entrada_numero.get()
             saldo = entrada_saldo.get()
             tipo_conta = entrada_tipo_conta.get()
+            cpf = entrada_cpf.get()
+            rua = entrada_rua.get()
+            numero_endereco = entrada_numero_endereco.get()
+            bairro = entrada_bairro.get()
+            cidade = entrada_cidade.get()
+            limite = entrada_limite.get()
+            tarifa = entrada_tarifa.get()
+            taxa_rendimento = entrada_taxa_rendimento.get()
+            empresa = entrada_empresa.get()
+            saques_realizados = entrada_saques_realizados.get()
+            limite_saques = entrada_limite_saques.get()
 
-            if titular == "" or numero == "" or saldo == "":
+            if titular == "" or numero == "" or saldo == "" or cpf=="" or rua == "" or numero_endereco == "" or bairro == "" or cidade == "":
                 messagebox.showerror("Erro", "Preencha todos os campos.")
                 return
-            
-            if tipo_conta == 'Conta Corrente':
-                return self.criar_conta_corrente()
 
             try:
                 numero = int(numero)
                 saldo = float(saldo)
+                numero_endereco = int(numero_endereco)
+
+                if limite != "":
+                    limite = float(limite)
+
+                if tarifa != "":
+                    tarifa = float(tarifa)
+
+                if taxa_rendimento != "":
+                    taxa_rendimento = float(taxa_rendimento)
+
+                if saques_realizados != "":
+                    saques_realizados = int(saques_realizados)
+
+                if limite_saques != "":
+                    limite_saques = int(limite_saques)
+
             except ValueError:
                 messagebox.showerror("Erro", "Número da conta e saldo devem ser valores numéricos.")
                 return
 
-            nova_conta = ContaBancaria(titular, numero, saldo)
-            self.contas.append(nova_conta)
+            if tipo_conta == 'Conta Corrente':
+                cliente = Cliente(titular, cpf, Endereco(rua, numero_endereco, bairro, cidade))
+                nova_conta = ContaCorrente(cliente, numero, saldo, limite, tarifa)
+                self.contas.append(nova_conta)
+
+            if tipo_conta == 'Conta Poupança':
+                cliente = Cliente(titular, cpf, Endereco(rua, numero_endereco, bairro, cidade))
+                nova_conta = ContaPoupanca(cliente, numero, saldo, taxa_rendimento)
+                self.contas.append(nova_conta)
+
+            if tipo_conta == 'Conta Salário':
+                cliente = Cliente(titular, cpf, Endereco(rua, numero_endereco, bairro, cidade))
+                nova_conta = ContaSalario(cliente, numero, saldo, empresa, saques_realizados, limite_saques)
+                self.contas.append(nova_conta)
 
             messagebox.showinfo("Sucesso", "Conta criada com sucesso.")
 
@@ -208,7 +270,7 @@ class BancoApp:
                 frame,
                 text="Dados do Cliente",
                 width=15,
-                command=lambda c=conta: self.exibir_dados(c)
+                command=lambda c=conta: self.dados_cliente(c)
             )
             # btn_dados.config(state="disabled")
             btn_dados_cliente.pack(pady=2)
@@ -245,8 +307,13 @@ class BancoApp:
 
             btn_contas_cliente.pack(pady=2)
 
+    def dados_cliente(self, conta):
+        messagebox.showinfo(
+        "Dados do Cliente",
+        conta.dados_cliente())
+
     def exibir_contas_cliente(self,conta):
-        print("fafdsfasfsda")
+        # print("fafdsfasfsda")
         # if self.contas:
         messagebox.showinfo("Contas do cliente:", conta.get_contas())
         # else:

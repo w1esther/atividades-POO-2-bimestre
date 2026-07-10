@@ -47,7 +47,7 @@ class Cliente:
         for conta in self.__contas:
             s += str(conta.get_numero()) + "; "
 
-        return self.__contas
+        return s
     
 
 class ContaBancaria:
@@ -125,7 +125,12 @@ class ContaBancaria:
         return f"Nome: {self.__cliente.get_nome()}\nConta: {self.__numero}\nSaldo: R$ {self.__saldo:.2f}\nCPF: {self.__cliente.get_cpf()}\n{self.__cliente.get_endereco().exibir_dados()}"
     
     def get_contas(self):
-        return self.__cliente.get_contas()
+        return self.__cliente.get_contas()   
+
+    def dados_cliente(self):
+        return f"Nome: {self.__cliente.get_nome()}\nCPF: {self.__cliente.get_cpf()}\n{self.__cliente.get_endereco().exibir_dados()}"
+        
+
     
 class ContaCorrente(ContaBancaria):
     def __init__(self, nome, conta, saldo, limite, tarifa_mensal):
