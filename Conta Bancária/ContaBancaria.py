@@ -1,3 +1,5 @@
+from abc import ABC, abstractclassmethod
+
 class Endereco:
     def __init__(self, rua, numero, bairro, cidade):
         self.__rua = rua
@@ -48,9 +50,29 @@ class Cliente:
             s += str(conta.get_numero()) + "; "
 
         return s
-    
 
-class ContaBancaria:
+    def possui_contas(self):
+        if self.__contas == []:
+            return False
+        else:
+            return True
+        
+    def buscar_conta(self, numero):
+        for conta in self.__contas:
+            if conta.get_numero() == numero:
+                return conta   
+        return None
+    
+    # conta._ContaBancaria__saldo
+        
+    def consultar_saldo_total(self):
+        somatorio_saldo = 0
+        for conta in self.__contas:
+            return conta._ContaBancaria.__saldo
+            somatorio_saldo += conta.get_saldo()
+        return somatorio_saldo
+    
+class ContaBancaria(ABC):
     numero_contas = []
     contas_duplicadas = []
     def __init__(self, nome, conta, saldo):
@@ -130,7 +152,17 @@ class ContaBancaria:
     def dados_cliente(self):
         return f"Nome: {self.__cliente.get_nome()}\nCPF: {self.__cliente.get_cpf()}\n{self.__cliente.get_endereco().exibir_dados()}"
         
+class Animal:
+    def __init__(self):
+        self.__gatinho = "tod"
+        self._doguinho = "odt"
+        self.coelho = "dto"
 
+class Teste(Animal):
+    def __init__(self):
+        super().__init__()
+
+        print(self._doguinho)
     
 class ContaCorrente(ContaBancaria):
     def __init__(self, nome, conta, saldo, limite, tarifa_mensal):
@@ -209,3 +241,49 @@ class ContaSalario(ContaBancaria):
 
     def get_tipo_conta(self):
         return 'Conta Salário'
+    
+class ContaUniversitaria(ContaBancaria):
+    def __init__(self, nome, conta, saldo):
+        super().__init__(nome, conta, saldo)
+        self.__limite_saque = 500
+
+    def sacar(self, valor):
+        if valor < 0:
+            return False
+        elif valor > self.get_saldo():
+            return False
+        elif valor > self.__limite_saque:
+            return False
+        else:
+            self._ContaBancaria__saldo -= valor
+            return True
+        
+    def get_tipo_conta(self):
+        return 'Conta Universitária'
+    
+
+cliente1  = Cliente("Ana", "004.045", Endereco('rua', 283, 'bairro', 'cidade'))
+cliente2 = Cliente('Maria', '123.432', Endereco('Rua 2', 124, 'Bairro 2', 'Cidade 2'))
+cliente3 = Cliente('Mariana', '123.4.3232', Endereco('Rua 3', 154, 'Bairro 3', 'Cidade 3'))
+
+# cliente2 = Cliente("Arthur", "023.450")        
+
+contas = [
+ContaCorrente(cliente1, 123, 200, 1000, 80),
+ContaPoupanca(cliente1, 145, 100, 0.1),
+ContaSalario(cliente1, 234, 300, 'X', 0, 2),
+ContaCorrente(cliente2, 832, 700, 1000, 45),
+ContaUniversitaria(cliente1, 765, 700)]
+
+conta_universitaria1 = ContaUniversitaria(cliente1, 765, 700)
+teste = Teste()
+animal = Animal()
+animal._doguinho = "arth"
+
+animal.__gatinho = 'arthur '
+print(animal._Animal__gatinho)
+# print(cliente2.possui_contas())
+# print(cliente1.buscar_conta(123))
+# print(cliente1.consultar_saldo_total())
+# print(conta_universitaria1.sacar(501))
+# print(conta_universitaria1.get_tipo_conta())

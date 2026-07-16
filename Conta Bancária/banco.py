@@ -10,6 +10,9 @@ class BancoApp:
 
         cliente1  = Cliente("Ana", "004.045", Endereco('rua', 283, 'bairro', 'cidade'))
         cliente2 = Cliente('Maria', '123.432', Endereco('Rua 2', 124, 'Bairro 2', 'Cidade 2'))
+        print(cliente2.possui_contas())
+        print(cliente1.buscar_conta(123))
+        print(cliente1.consultar_saldo_total())
         # cliente2 = Cliente("Arthur", "023.450")        
 
         self.contas = [
